@@ -1,4 +1,4 @@
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *str)
 {
@@ -57,5 +57,32 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
 	free(s1);
+	return (str);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*str;
+	size_t	i;
+	size_t	len_s;
+
+	if (!s)
+		return (NULL);
+	if (len > ft_strlen(s))
+		len = ft_strlen(s);
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	i = 0;
+	len_s = ft_strlen(s);
+	if (start + i < len_s)
+	{
+		while (s[start + i] && i < len)
+		{
+			str[i] = s[start + i];
+			i++;
+		}
+	}
+	str[i] = '\0';
 	return (str);
 }
