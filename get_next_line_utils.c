@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   get_next_line_utils.c                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: dsaat <dsaat@student.codam.nl>               +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2021/12/13 12:33:37 by dsaat         #+#    #+#                 */
+/*   Updated: 2021/12/13 12:33:38 by dsaat         ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 size_t	ft_strlen(const char *str)
@@ -26,36 +38,67 @@ char	*ft_strrchr(const char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+static char	*ft_calloc(size_t count, size_t size)
+{
+	char	*ptr;
+
+	ptr = (void *) malloc(count * size);
+	if (!ptr)
+		return (NULL);
+	while (size > 0)
+	{
+		ptr[size - 1] = '\0';
+		size--;
+	}
+	return (ptr);
+}
+
+char	*ft_strjoin(char *save, char *buff)
 {
 	size_t	i;
-	size_t	j;
 	char	*str;
 
-	if (!s1)
-	{
-		s1 = (char *)malloc(sizeof(char) * 1);
-		s1[0] = '\0';
-	}
-	if (!s1 || !s2)
+	if (!save)
+		save = (char *)ft_calloc(1, sizeof(char));
+	if (!save || !buff)
 		return (NULL);
-	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	str = ft_calloc(1, sizeof(char) * (ft_strlen(save) + ft_strlen(buff) + 1));
 	if (str == NULL)
 		return (NULL);
 	i = 0;
-	while (s1[i] != '\0')
+	while (save[i] != '\0')
 	{
-		str[i] = s1[i];
+		str[i] = save[i];
 		i++;
 	}
-	j = 0;
-	while (s2[j] != '\0')
+	while (*buff != '\0')
 	{
-		str[i] = s2[j];
+		str[i] = *buff;
 		i++;
-		j++;
+		buff++;
 	}
-	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
-	free(s1);
+	free(save);
+	return (str);
+}
+
+char	*ft_substr(char *save, unsigned int start, size_t len, int extra)
+{
+	char	*str;
+	size_t	i;
+
+	i = 0;
+	str = (char *)ft_calloc(1, sizeof(char) * (len + extra));
+	if (!str)
+		return (NULL);
+	while (save[start + i] && i < len)
+	{
+		str[i] = save[start + i];
+		i++;
+	}
+	if (save[start + i] == '\n')
+	{
+		str[i] = save[start + i];
+		i++;
+	}
 	return (str);
 }
